@@ -3,18 +3,18 @@ const routes = [
   {
     path: '/',
     pos: 'bottom',
-    label : 'home',
-    icon: "home",
+    label : 'Dashboard',
+    icon: "dashboard",
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '',name: 'Home', component: () => import('pages/IndexPage.vue') }
+      { path: '',name: 'Dashboard', component: () => import('pages/IndexPage.vue') }
     ]
   },
   {
     path: '/accounts',
     pos: 'bottom',
     label : 'accounts',
-    icon: "account_balance",
+    icon: "savings",
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '',name: 'Cuentas', component: () => import('pages/AccountsPage.vue') }
@@ -24,7 +24,7 @@ const routes = [
     path: '/cards',
     pos: 'bottom',
     label : 'cards',
-    icon: "credit_cards",
+    icon: "payment",
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', name: 'Tarjetas', component: () => import('pages/CardsPage.vue') }
@@ -66,7 +66,7 @@ const routes = [
     icon: "account_circle",
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/ProfilePage.vue') }
+      { path: '',  name: 'Perfil', component: () => import('pages/ProfilePage.vue') }
     ]
   },
   {
@@ -76,7 +76,17 @@ const routes = [
     icon: "email",
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/ProfilePage.vue') }
+      { path: '',  name: 'Notificaciones', component: () => import('pages/ProfilePage.vue') }
+    ]
+  },
+  {
+    path: '/settings',
+    pos: 'top',
+    label : 'Settings',
+    icon: "settings",
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '',  name: 'Settings', component: () => import('pages/SettingsPage.vue') }
     ]
   },
   // Always leave this as last one,

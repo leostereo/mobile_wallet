@@ -12,6 +12,7 @@ export const useAuthStore = defineStore({
     user: JSON.parse(localStorage.getItem("user")),
     returnUrl: null,
     loading: false,
+    base_api : ''
   }),
   actions: {
     async pushTest() {
@@ -20,6 +21,7 @@ export const useAuthStore = defineStore({
     },
 
     async login(email, password) {
+
       const user = await fetchWrapper.post(
         `${CONSTANTS.LARAVEL_API}/login`,
         { email, password }

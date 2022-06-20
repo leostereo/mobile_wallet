@@ -1,23 +1,29 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="row justify-center  full-width">
-      <div class="col-12 col-md-4 ">
-        <q-card class="text-white q-mx-md q-py-xl">
-          <div class="q-pa-md">
-            <div class="q-gutter-y-md column text-center" style="max-width: 300px">
-              <div v-if="loading">
-                <q-spinner-clock color="primary" size="2em" />
-                <q-tooltip :offset="[0, 8]">QSpinnerClock</q-tooltip>
-              </div>
 
-              <q-input v-model="email" label="usuario (email)" stack-label />
-              <q-input v-model="password" filled type="password" hint="PAssword" />
-              <q-btn @click="onSubmit" color="primary" label="Login" />
-            </div>
+    <q-card flat class="my-card transparent rounded-frame" v-if="true">
+
+      <div class="q-pa-md" style="max-width: 400px">
+
+        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md text-h6">
+          <q-input dark v-model="email" label="user (your email)" stack-label label-color="primary"
+            color="primary" class="text-h6 text-weight-bolder" type="email"/>
+
+          <q-input dark v-model="password" label="Password" stack-label label-color="primary"
+            color="primary" class="text-h6 text-weight-bolder" type="password"/>
+
+
+          <div class="row justify-end">
+            <q-btn label="LOGIN" type="submit" color="primary" class="text-h6 text-weight-bolder" rounded outline />
           </div>
-        </q-card>
+
+        </q-form>
+
       </div>
-    </div>
+
+
+
+    </q-card>
   </q-page>
 </template>
 
@@ -37,8 +43,7 @@ function onSubmit() {
 
   loading.value = true;
   return authStore.login(email.value, password.value)
-    .catch(error =>
-    {
+    .catch(error => {
       loading.value = false;
       console.log('El server devuelve: ' + error)
     });
@@ -46,3 +51,5 @@ function onSubmit() {
 
 
 </script>
+
+

@@ -1,5 +1,9 @@
 export const CONSTANTS = {
   LARAVEL_API: "http://komuny.waas.financial/api",
+
+  set base_url (base_url) {
+    this.LARAVEL_API = base_url;
+  },
 };
 
 export const ACCOUNT_ACTIONS = [
