@@ -16,12 +16,13 @@ export const useCardsStore = defineStore({
         async getDetails() {
             console.log(`getting cards at: ${CONSTANTS.LARAVEL_API}/cards/users/list`)
             this.ready = false;
+            this.firstSlide = '';
             this.response = {};
             fetchWrapper.get(`${CONSTANTS.LARAVEL_API}/cards/users/list`)
                 .then(cards => {
                   this.cards = cards
-                  this.ready = true;
                   this.firstSlide = cards.db_data[0].card_id;
+                  this.ready = true;
                   })
                 .catch(error => {
 

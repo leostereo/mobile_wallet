@@ -19,4 +19,8 @@ export default defineComponent({
   border-color: #ff8800;
   border-radius: 10px;
 }
+
+.q-btn--outline:before {
+    border: 4px solid currentColor;
+}
 </style>

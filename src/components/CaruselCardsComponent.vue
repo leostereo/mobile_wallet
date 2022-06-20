@@ -11,8 +11,8 @@
         <q-card flat class="my-card transparent" v-if="cardsStore.ready">
 
           <q-carousel v-model="slide" transition-prev="scale" transition-next="scale" swipeable animated
-            control-color="primary" padding arrows height="320px" class="transparent">
-            <q-carousel-slide v-for="card in cardsStore.cards.db_data" :key="card.card_id" :name="card.card_id"
+            transition-duration="800" control-color="primary" padding arrows height="320px" class="transparent">
+            <q-carousel-slide v-for="(card, index) in cardsStore.cards.db_data" :key="index" :name="index"
               class="column no-wrap flex-center transparent">
               <div class="q-mt-md text-center">
 
@@ -49,22 +49,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { onMounted } from 'vue'
+import { ref, computed , onMounted} from 'vue'
 import { useCardsStore } from 'src/stores/cards.store';
 import { CARD_ACTIONS } from 'src/constants'
 
-
-
 const cardsStore = useCardsStore();
 const actions = CARD_ACTIONS;
-const slide = ref('');
+const slide = ref(0);
+const slides = computed(() => cardsStore.firstSlide)
 
 onMounted(() => {
+
   console.log(`the carusel component is now mounted.`)
   cardsStore.getDetails();
-  slide.value = cardsStore.firstSlide;
 
 })
+
 
 </script>

@@ -1,29 +1,26 @@
 <template>
   <q-page class="flex flex-center">
+    <div class="row justify-center">
+      <div class="col-12 col-md-8">
 
     <q-card flat class="my-card transparent rounded-frame" v-if="true">
-
       <div class="q-pa-md" style="max-width: 400px">
-
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md text-h6">
-          <q-input dark v-model="email" label="user (your email)" stack-label label-color="primary"
-            color="primary" class="text-h6 text-weight-bolder" type="email"/>
-
-          <q-input dark v-model="password" label="Password" stack-label label-color="primary"
-            color="primary" class="text-h6 text-weight-bolder" type="password"/>
-
-
-          <div class="row justify-end">
-            <q-btn label="LOGIN" type="submit" color="primary" class="text-h6 text-weight-bolder" rounded outline />
-          </div>
-
+          <q-input dark v-model="email" label="user (your email)" stack-label label-color="primary" color="primary"
+            class="text-h6 text-weight-bolder" type="email" />
+          <q-input dark v-model="password" label="Password" stack-label label-color="primary" color="primary"
+            class="text-h6 text-weight-bolder" type="password" />
         </q-form>
+      </div>
+    </q-card>
+
+      <q-card  flat class="transparent q-mt-md" align="right">
+        <q-btn icon="login" round color="primary" class="text-h6 text-weight-bolder  q-px-md" @click="onSubmit" rounded
+          outline />
+      </q-card>
 
       </div>
-
-
-
-    </q-card>
+    </div>
   </q-page>
 </template>
 

@@ -14,8 +14,8 @@
         <q-card flat class="my-card transparent " v-if="accountsStore.ready">
 
           <q-carousel v-model="slide" transition-prev="scale" transition-next="scale" swipeable animated
-            control-color="primary" padding arrows height="300px" class="rounded-borders transparent">
-            <q-carousel-slide v-for="account in accountsStore.accounts.data" :key="account.id" :name="account.id"
+            transition-duration="800" control-color="primary" padding arrows height="300px" class="rounded-borders transparent">
+            <q-carousel-slide v-for="(account, index) in accountsStore.accounts.data" :key="index" :name="index"
               class="column no-wrap flex-center transparent">
               <div class="q-mt-md text-center">
 
@@ -64,12 +64,7 @@
           </q-card-actions>
 
         </q-card>
-
-
       </div>
-
-
-
     </q-card>
   </q-page>
 
@@ -86,12 +81,13 @@ import { useAccountsStore } from 'src/stores/accounts.store';
 const operations = ACCOUNT_CASH_OPERATION;
 const actions = ACCOUNT_ACTIONS;
 const accountsStore = useAccountsStore();
-const slide = ref('');
+const slide = ref(0);
 
 onMounted(() => {
-  console.log(`the carusel component is now mounted.`)
+
+  console.log(`the accounts carusel component is now mounted.`)
   accountsStore.getDetails();
-  slide.value = accountsStore.firstSlide;
+
 })
 
 </script>
