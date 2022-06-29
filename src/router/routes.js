@@ -40,12 +40,12 @@ const routes = [
     ]
   },
   {
-    path: '/loginFirebase',
+    path: '/LoginAuth0Page',
     pos: 'top',
-    label : 'login fire',
+    label : 'login auth0',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '',name: 'LoginFirebase', component: () => import('pages/LoginFirebasePage.vue') }
+      { path: '',name: 'LoginFirebase', component: () => import('pages/LoginAuth0Page.vue') }
     ]
   },
   {
