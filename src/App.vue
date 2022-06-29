@@ -23,4 +23,8 @@ export default defineComponent({
 .q-btn--outline:before {
     border: 4px solid currentColor;
 }
+
+.back_menu {
+  opacity: 0.2;
+}
 </style>

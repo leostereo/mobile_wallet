@@ -1,0 +1,16 @@
+<template>
+
+      <div v-if="ready" align="center">
+        <q-spinner-clock color="primary" size="8em" />
+        <q-tooltip :offset="[0, 8]">QSpinnerClock</q-tooltip>
+      </div>
+
+</template>
+
+<script setup>
+
+
+const props = defineProps(['ready'])
+
+
+</script>

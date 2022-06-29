@@ -32,6 +32,9 @@ export const useAccountsStore = defineStore({
                   const authStore = useAuthStore();
                   authStore.logout();
                 })
+        },
+        async action_handler (action,acc_id){
+          alert(`${action} ${acc_id}`);
         }
     }
 });

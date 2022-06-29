@@ -8,14 +8,14 @@
 
         <div class="text-h6">
 
-          <q-btn size="xl"  flat round icon="account_circle" class="q-ml-md">
+          <q-btn size="xl" flat round icon="account_circle" class="q-ml-md">
             <q-badge color="primary" floating>4</q-badge>
-            <q-menu class="bg-dark rounded-frame text-primary">
+            <q-menu v-model="show" class="bg-dark rounded-frame text-primary">
               <q-list>
                 <q-item v-for="button in TopButtons" :key="button.link" :to="button.path" clickable v-close-popup
                   @click="onItemClick">
                   <q-item-section avatar>
-                    <q-icon color="primary" :name="button.icon"/>
+                    <q-icon color="primary" :name="button.icon" />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>{{ button.label }}</q-item-label>
@@ -25,12 +25,21 @@
 
                 <q-item clickable v-close-popup @click="authStore.logout()" v-if="!!authStore.user?.access_token">
                   <q-item-section avatar>
-                    <q-icon color="primary" name="logout"/>
+                    <q-icon color="primary" name="logout" />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Logout</q-item-label>
                   </q-item-section>
                 </q-item>
+                <q-item clickable v-close-popup @click="logout" v-if="isLoggedIn">
+                  <q-item-section avatar>
+                    <q-icon color="primary" name="logout" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Logout Firebase</q-item-label>
+                  </q-item-section>
+                </q-item>
+
               </q-list>
             </q-menu>
           </q-btn>
@@ -40,15 +49,15 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <q-page-container v-bind:class="{ 'back_menu': show }">
       <router-view />
     </q-page-container>
 
     <q-footer elevated class="transparent">
       <q-toolbar class="justify-center">
 
-        <q-btn class="q-mx-sx text-primary"  v-for="navButton in BottomButtons" :key="navButton.path"
-          :to="navButton.path" :icon="navButton.icon" stack size="xl" flat/>
+        <q-btn class="q-mx-sx text-primary" v-for="navButton in BottomButtons" :key="navButton.path"
+          :to="navButton.path" :icon="navButton.icon" stack size="xl" flat />
 
       </q-toolbar>
     </q-footer>
@@ -56,14 +65,21 @@
 </template>
 
 <script setup>
-
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"
 import { useAuthStore } from 'src/stores/auth.store';
 import routes from 'src/router/routes'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+
+import { useRouter } from "vue-router"
 
 
 
+const router = useRouter();
 const authStore = useAuthStore();
+const isLoggedIn = ref(false);
+const show = ref(false);
+let auth;
+
 
 const BottomButtons = routes.filter(
 
@@ -77,5 +93,23 @@ const TopButtons = routes.filter(
     return route.pos == 'top';
   });
 
+
+onMounted(() => {
+  auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      isLoggedIn.value = true;
+    } else {
+      isLoggedIn.value = false;
+    }
+  })
+})
+
+const logout = () => {
+  signOut(auth).then(() => {
+  router.push('/settings');
+  });
+
+}
 
 </script>

@@ -40,6 +40,15 @@ const routes = [
     ]
   },
   {
+    path: '/loginFirebase',
+    pos: 'top',
+    label : 'login fire',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '',name: 'LoginFirebase', component: () => import('pages/LoginFirebasePage.vue') }
+    ]
+  },
+  {
     path: '/testing',
     pos: 'none',
     label : 'test',
@@ -57,6 +66,16 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', name: 'Testing2', component: () => import('pages/CardsPage.vue') }
+    ]
+  },
+  {
+    path: '/layout',
+    pos: 'none',
+    label : 'Layout',
+    icon: "build",
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', name: 'Layout', component: () => import('pages/LayoutPage.vue') }
     ]
   },
   {

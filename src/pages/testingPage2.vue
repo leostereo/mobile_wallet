@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div class="row justify-center  full-width">
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-sm-4 q-px-sm">
         <q-card class="text-white q-mx-md q-py-xl"
           style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)">
           <CounterComponent />

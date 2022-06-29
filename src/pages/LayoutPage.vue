@@ -1,20 +1,26 @@
 <template>
-
-
+  <q-page class="flex flex-center">
+    <div class="row justify-center  full-width">
+      <div class="col-12 col-sm-4 q-px-sm">
 
     <q-card flat class="my-card transparent">
 
-      <LoadingComponent :ready="!accountsStore.ready" />
+      <div class="q-pa-md">
 
-        <q-card flat class="my-card transparent"  v-if="accountsStore.ready">
+        <div v-if="!accountsStore.ready">
+          <q-spinner-clock color="primary" size="8em" />
+          <q-tooltip :offset="[0, 8]">QSpinnerClock</q-tooltip>
+        </div>
+
+        <q-card flat class="my-card transparent " v-if="accountsStore.ready">
 
           <q-carousel v-model="slide" transition-prev="scale" transition-next="scale" swipeable animated
             transition-duration="800" control-color="primary" padding arrows height="300px" class="rounded-borders transparent">
             <q-carousel-slide v-for="(account, index) in accountsStore.accounts.data" :key="index" :name="index"
-              class="column no-wrap flex-center transparent" >
+              class="column no-wrap flex-center transparent">
               <div class="q-mt-md text-center">
 
-                <q-card flat bordered class="my-card transparent rounded-frame" v-bind:class="{ 'back_menu': show  }">
+                <q-card flat bordered class="my-card transparent rounded-frame">
                   <q-card-section class="text-danger">
                     <div class="row items-center no-wrap">
                       <div class="col">
@@ -22,9 +28,9 @@
                       </div>
                       <div class="col-auto">
                         <q-btn color="white" round flat icon="more_vert">
-                          <q-menu  v-model="show" cover auto-close class="bg-dark rounded-frame text-primary">
+                          <q-menu cover auto-close class="bg-dark rounded-frame text-primary">
                             <q-list>
-                              <q-item v-for="action in actions" :key="action.label" clickable @click="accountsStore.action_handler(action.label , account.id)">
+                              <q-item v-for="action in actions" :key="action.label" clickable>
                                 <q-item-section>{{ action.label }}</q-item-section>
                               </q-item>
                             </q-list>
@@ -41,7 +47,7 @@
                   <q-separator />
 
                   <q-card-actions class="text-primary">
-                    <q-btn v-for="operation in operations" padding="0px 0px" :key="operation.label" :size="operation.size" flat>
+                    <q-btn v-for="operation in operations" :key="operation.label" :size="operation.size" flat>
                       {{ operation.label }}</q-btn>
                   </q-card-actions>
                 </q-card>
@@ -59,28 +65,27 @@
           </q-card-actions>
 
         </q-card>
-
+      </div>
     </q-card>
 
 
 
+      </div>
+    </div>
+  </q-page>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { onMounted } from 'vue'
-import { useAccountsStore } from 'src/stores/accounts.store';
-import LoadingComponent from 'src/components/LoadingComponent.vue';
 import { ACCOUNT_ACTIONS, ACCOUNT_CASH_OPERATION } from 'src/constants'
+import { useAccountsStore } from 'src/stores/accounts.store';
 
 
 const operations = ACCOUNT_CASH_OPERATION;
-const accountsStore = useAccountsStore();
 const actions = ACCOUNT_ACTIONS;
-const show = ref(false);
+const accountsStore = useAccountsStore();
 const slide = ref(0);
-
- 
 
 onMounted(() => {
 
@@ -88,7 +93,5 @@ onMounted(() => {
   accountsStore.getDetails();
 
 })
-
-
 
 </script>

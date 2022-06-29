@@ -1,12 +1,7 @@
 <template>
 
-  <q-page class="flex flex-center">
-    <div class="q-pa-md" style="max-width: 400px">
 
-      <div v-if="!userStore.ready">
-        <q-spinner-clock color="primary" size="8em" />
-        <q-tooltip :offset="[0, 8]">QSpinnerClock</q-tooltip>
-      </div>
+      <LoadingComponent :ready="!userStore.ready" />
 
       <q-card class="my-card  transparent rounded-frame q-pa-xs" flat v-if="userStore.ready">
 
@@ -49,15 +44,14 @@
         </q-card-actions>
       </q-card>
 
-
-    </div>
-  </q-page>
 </template>
 
 <script setup>
 
 import { onMounted } from 'vue'
 import { useUsersStore } from 'src/stores/users.store';
+import LoadingComponent from 'src/components/LoadingComponent.vue';
+
 const userStore = useUsersStore();
 
 onMounted(() => {
