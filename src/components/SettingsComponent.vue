@@ -1,13 +1,12 @@
 <template>
-
+<span>version 1.0.0</span>
       <q-card flat class="my-card transparent rounded-frame q-pa-md" v-if="true">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md text-h6">
             <q-input dark v-model="base_api" label="base api url with port included" stack-label label-color="primary"
               color="primary" class="text-h6 text-weight-bolder" type="url" />
 
-
             <q-toggle v-model="theme" label="dark mode(very soon!)" />
-
+           
 
           </q-form>
       </q-card>

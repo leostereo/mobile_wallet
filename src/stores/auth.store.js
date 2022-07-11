@@ -8,11 +8,15 @@ export const useAuthStore = defineStore({
 
   state: () => ({
     // initialize state from local storage to enable user to stay logged in
-
+    authenticatedInAuth0 : false,
+    isAuthenticated: false,
+    auth0user : {},
+    last_response : '',
+    api_token : '',
     user: JSON.parse(localStorage.getItem("user")),
     returnUrl: null,
     loading: false,
-    base_api : ''
+
   }),
   actions: {
     async pushTest() {
@@ -20,6 +24,48 @@ export const useAuthStore = defineStore({
       this.router.push('/')
     },
 
+    async clearState() {
+      this.authenticatedInAuth0 = false;
+      this.isAuthenticated = false;
+      this.api_token = '';
+      this.auth0user = {};
+      this.user = null;
+      localStorage.removeItem("user");
+    },
+
+    async register() {
+      console.log('LETS REGISTER')
+    },
+
+    async logister() {
+      
+      console.log(this.auth0user.authenticated.email);
+      let email = this.auth0user.authenticated.email;
+
+      const user = await fetchWrapper.post(
+        `${CONSTANTS.LARAVEL_API}/login`,
+        { email, password:'password'}
+        
+      ).catch(error => {
+        console.log('El server devuelve: ' + error)
+        if(error===401){
+          this.last_response = 401;
+          this.register();
+        }
+      });
+      
+      console.log(user);
+      // update pinia state
+      this.isAuthenticated = true;
+      this.user = user;
+
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // redirect to previous url or default to home page
+      this.router.push('/');
+
+
+    },
     async login(email, password) {
 
       const user = await fetchWrapper.post(
@@ -38,9 +84,7 @@ export const useAuthStore = defineStore({
       this.router.push(this.returnUrl || '/');
     },
     logout() {
-      this.user = null;
-      localStorage.removeItem("user");
-      this.router.push("/login");
+      //this.router.push("/login");
     },
   },
 });

@@ -8,9 +8,10 @@ export default boot(async ({ app }) => {
 
   app.use(
     createAuth0({
-      domain: "dev-tokk7fzg.us.auth0.com",
-      client_id: "ZFHZD96r877ELN81riv1uVb95KyG4JXE",
+      domain: "dev-ezn67tyz.us.auth0.com",
+      client_id: "6qqkwbmK1OKqwrSE9Y6JBiiHCXEsIaJd",
       redirect_uri: window.location.origin,
+      audience: 'https://dev.wallet.komuny.social',
     })
   );
 });

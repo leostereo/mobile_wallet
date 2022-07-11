@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/accounts',
     pos: 'bottom',
-    label : 'accounts',
+    label : 'Cuentas',
     icon: "savings",
     component: () => import('layouts/MainLayout.vue'),
     children: [
@@ -23,7 +23,7 @@ const routes = [
   {
     path: '/cards',
     pos: 'bottom',
-    label : 'cards',
+    label : 'Tarjetas',
     icon: "payment",
     component: () => import('layouts/MainLayout.vue'),
     children: [
@@ -37,15 +37,6 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '',name: 'Login', component: () => import('pages/LoginPage.vue') }
-    ]
-  },
-  {
-    path: '/LoginAuth0Page',
-    pos: 'top',
-    label : 'login auth0',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '',name: 'LoginFirebase', component: () => import('pages/LoginAuth0Page.vue') }
     ]
   },
   {
@@ -63,9 +54,9 @@ const routes = [
     pos: 'none',
     label : 'testing2',
     icon: "build",
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/MainLayout2.vue'),
     children: [
-      { path: '', name: 'Testing2', component: () => import('pages/CardsPage.vue') }
+      { path: '', name: 'Testing2', component: () => import('pages/testingPage.vue') }
     ]
   },
   {

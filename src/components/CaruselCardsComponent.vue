@@ -1,5 +1,5 @@
 <template>
-  <q-card flat class="my-card transparent">
+  <q-card flat class="my-card transparent q-mt-xs">
 
     <LoadingComponent :ready="!cardsStore.ready" />
 

@@ -28,11 +28,11 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to, from, next) => {
-    const publicPages = ['/login','/settings'];
+    const publicPages = ['/login','/'];
     const authRequired = !publicPages.includes(to.path);
     const auth = useAuthStore();
 
-    if (authRequired && !auth.user) {
+    if (authRequired && !auth.isAuthenticated) {
     //auth.returnUrl = to.fullPath;
       console.log('ROUTER: USUARIO NO LOGUEADO');
       next({

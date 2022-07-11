@@ -50,12 +50,12 @@
             </q-carousel-slide>
           </q-carousel>
 
-          <q-card-actions class="justify-end text-white">
+          <q-card-actions class="justify-center text-white">
 
-          <div class="row justify-end">
+         
             <q-btn  icon="add" round color="primary"
             class="text-h6 text-weight-bolder  q-px-md" rounded outline/>
-          </div>
+      
           </q-card-actions>
 
         </q-card>

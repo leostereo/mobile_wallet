@@ -6,9 +6,8 @@
         <q-card flat class="my-card transparent rounded-frame" v-if="true">
           <q-card-actions align="center">
 
-            <q-btn @click="onSubmit"
-            label="Login with google" stack
-            class="text-h6 text-weight-bolder  q-px-md" icon="login" />
+            <q-btn @click="login" label="Login with google" stack class="text-h6 text-weight-bolder  q-px-md"
+              icon="login" />
 
           </q-card-actions>
         </q-card>
@@ -18,32 +17,23 @@
 </template>
 
 <script setup>
+import { useAuth0 } from '@auth0/auth0-vue';
+import { ref, watch } from 'vue'
 
-import { useFirebaseAuthStore } from 'src/stores/firebase.auth.store';
-import { ref } from 'vue'
-
-
-const firebaseAuthStore = useFirebaseAuthStore();
+const auth0 = useAuth0();
 const loading = ref(false);
+const user = ref(auth0.user);
 
-//functions
+watch(user, (authenticated) => {
+  console.log(`user is ${authenticated.name}`)
 
-function onSubmit() {
+})
 
+async function login() {
   loading.value = true;
-  firebaseAuthStore.login()
+
+  await auth0.loginWithRedirect();
 
 }
 
-
-const signInWithGoogle = () => {
-  console.log('sgin wit google')
-  const provider = new GoogleAuthProvider();
-  signInWithPopup(getAuth(), provider)
-    .then((result) => {
-      console.log(result.user)
-
-
-    });
-}
 </script>

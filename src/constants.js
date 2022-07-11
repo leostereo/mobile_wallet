@@ -1,5 +1,5 @@
 export const CONSTANTS = {
-  LARAVEL_API: "https://wallet.komuny.social/api",
+  LARAVEL_API: "https://dev.wallet.komuny.social/api",
 
   set base_url (base_url) {
     this.LARAVEL_API = base_url;

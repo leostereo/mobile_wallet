@@ -3,16 +3,13 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signO
 
 import { CONSTANTS } from 'src/constants'
 
-export const useFirebaseAuthStore = defineStore({
-  id: "firebase-auth",
+export const useAuth0AuthStore = defineStore({
+  id: "auth0-auth",
 
   state: () => ({
     // initialize state from local storage to enable user to stay logged in
+    isAuthenticated : false,
 
-    user: JSON.parse(localStorage.getItem("firebase_user")),
-    returnUrl: null,
-    loading: false,
-    base_api : ''
   }),
   actions: {
 
