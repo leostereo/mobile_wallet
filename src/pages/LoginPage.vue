@@ -18,19 +18,19 @@
 
 <script setup>
 import { useAuth0 } from '@auth0/auth0-vue';
-import { ref, watch } from 'vue'
+import { onBeforeMount } from 'vue'
 
 const auth0 = useAuth0();
-const loading = ref(false);
-const user = ref(auth0.user);
 
-watch(user, (authenticated) => {
-  console.log(`user is ${authenticated.name}`)
+
+onBeforeMount(() => {
+
+  console.log(`the login component is before mounted.`)
+  
 
 })
 
 async function login() {
-  loading.value = true;
 
   await auth0.loginWithRedirect();
 

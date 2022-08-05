@@ -20,6 +20,10 @@ export default defineComponent({
   border-radius: 10px;
 }
 
+.notify{
+   margin-top: 12em;
+}
+
 .q-btn--outline:before {
     border: 4px solid currentColor;
 }

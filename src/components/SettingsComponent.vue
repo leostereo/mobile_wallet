@@ -1,5 +1,5 @@
 <template>
-<span>version 1.0.0</span>
+<span>version 1.1.0-1607</span>
       <q-card flat class="my-card transparent rounded-frame q-pa-md" v-if="true">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md text-h6">
             <q-input dark v-model="base_api" label="base api url with port included" stack-label label-color="primary"
@@ -7,6 +7,10 @@
 
             <q-toggle v-model="theme" label="dark mode(very soon!)" />
            
+
+      <q-select color="grey-3" outlined label-color="primary"  bg-color="dark"  v-model="model" :options="options" label="Label">
+
+      </q-select>
 
           </q-form>
       </q-card>
@@ -28,6 +32,7 @@ const base_api = ref('');
 const theme = ref(false)
 
 function onSubmit() {
+  
   CONSTANTS.base_url = base_api.value;
   authStore.base_api = base_api.value;
 

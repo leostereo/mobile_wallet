@@ -1,90 +1,156 @@
-import { defineStore } from "pinia";
 import { fetchWrapper } from "src/helpers/fetch-wrapper";
-
-import { CONSTANTS } from 'src/constants'
+import { CONSTANTS } from "src/constants";
+import { defineStore } from "pinia";
+import { Notify } from "quasar";
+import { registerRuntimeHelpers } from "@vue/compiler-core";
 
 export const useAuthStore = defineStore({
   id: "auth",
 
   state: () => ({
     // initialize state from local storage to enable user to stay logged in
-    authenticatedInAuth0 : false,
     isAuthenticated: false,
-    auth0user : {},
-    last_response : '',
-    api_token : '',
-    user: JSON.parse(localStorage.getItem("user")),
-    returnUrl: null,
-    loading: false,
-
+    auth0user: {},
+    last_response: "",
+    token: null,
+    user: {},
+    //loading: false,
+    ready: false,
+    accounts: {},
+    firstSlide: "",
+    cards: {},
   }),
   actions: {
     async pushTest() {
       console.log("pushing");
-      this.router.push('/')
+      this.router.push("/");
     },
 
     async clearState() {
-      this.authenticatedInAuth0 = false;
-      this.isAuthenticated = false;
-      this.api_token = '';
+      this.token = null;
       this.auth0user = {};
-      this.user = null;
+      this.user = {};
       localStorage.removeItem("user");
     },
 
-    async register() {
-      console.log('LETS REGISTER')
-    },
+    async getDetails(end_point) {
+      const url = `${CONSTANTS.LARAVEL_API}/${end_point}`;
+      console.log(`AUTH STORE getting  details at: ${url}`);
+      console.log(`AUTH STORE , with token : ${this.token}`);
 
-    async logister() {
-      
-      console.log(this.auth0user.authenticated.email);
-      let email = this.auth0user.authenticated.email;
+      this.ready = false;
+      this.firstSlide = "";
+      this.response = {};
 
-      const user = await fetchWrapper.post(
-        `${CONSTANTS.LARAVEL_API}/login`,
-        { email, password:'password'}
-        
-      ).catch(error => {
-        console.log('El server devuelve: ' + error)
-        if(error===401){
-          this.last_response = 401;
-          this.register();
-        }
+      const response = await fetch(url, {
+        headers: {
+          Authorization: "Bearer " + this.token,
+        },
       });
-      
-      console.log(user);
-      // update pinia state
-      this.isAuthenticated = true;
-      this.user = user;
+      const api_response = await response.json();
 
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // redirect to previous url or default to home page
-      this.router.push('/');
-
-
+      if (api_response.length !== 0) {
+        if (end_point == "accounts/user/list") {
+          if (api_response.data.length !== 0) {
+            this.accounts = api_response;
+            this.firstSlide = api_response.data[0].id;
+          } else {
+            console.log(` DETAIL RESPONSE : NO ACCOUNTS`);
+          }
+        } else if (end_point == "cards/users/list") {
+          if (api_response.db_data.length !== 0) {
+            this.cards = api_response;
+            this.firstSlide = api_response.db_data[0].card_id;
+          } else {
+            console.log(` DETAIL RESPONSE : NO CARDS`);
+          }
+        } else if (end_point == "users") {
+          this.user = api_response;
+        }
+      } else {
+        console.log(` DETAIL RESPONSE : EMPTY ARRAY`);
+      }
+      this.ready = true;
     },
-    async login(email, password) {
 
-      const user = await fetchWrapper.post(
-        `${CONSTANTS.LARAVEL_API}/login`,
-        { email, password }
-      );
+    async api_call(call_data) {
+      console.log(`AUTH.STORE ${JSON.stringify(call_data)}`);
+      this.ready = false;
+      const url = `${CONSTANTS.LARAVEL_API}/${call_data.call_endpoint}`;
 
-      console.log(user);
-      // update pinia state
-      this.user = user;
+      let call_obj = {};
 
-      // store user details and jwt in local storage to keep user logged in between page refreshes
-      localStorage.setItem("user", JSON.stringify(user));
+      if (call_data.call_method == "get") {
+        call_obj = {
+          method: call_data.call_method, // *GET, POST, PUT, DELETE, etc.
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            Authorization: "Bearer " + this.token,
+          },
+          redirect: "follow", // manual, *follow, error
+          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        };
+      } else {
+        call_obj = {
+          method: call_data.call_method, // *GET, POST, PUT, DELETE, etc.
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + this.token,
+          },
+          redirect: "follow", // manual, *follow, error
+          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(call_data.call_body), // body data type must match "Content-Type" header
+        };
+      }
 
-      // redirect to previous url or default to home page
-      this.router.push(this.returnUrl || '/');
+      try {
+        const response = await fetch(url, call_obj);
+
+        if (response.ok) {
+          var data = await response.json();
+        } else if (response.status == "403") {
+        } else {
+          this.notify(`API RETURNS ${response.status}`, "warning");
+          this.ready = true;
+        }
+
+        if (call_data.return_data) {
+          this.ready = true;
+          return data;
+        } else {
+          await this.getDetails(call_data.refresh_url);
+          this.notify(
+            call_data.success_result.message,
+            call_data.success_result.icon
+          );
+          this.ready = true;
+        }
+
+        //console.log(`status ${response.status}`);
+
+        //return data;
+      } catch (err) {
+        console.log(`error ${err}`);
+      }
     },
-    logout() {
-      //this.router.push("/login");
+
+    notify(message = "HOLA", icon = "thumb_up") {
+      Notify.create({
+        message,
+        position: "top",
+        icon,
+        color: "dark",
+        textColor: "primary",
+        classes: "rounded-frame notify",
+        timeout: 2500,
+      });
     },
+
+    // logout() {
+    //   this.router.push("/login");
+    // },
   },
 });

@@ -24,12 +24,14 @@ function request(method) {
 // helper functions
 
 function authHeader(url) {
+    console.log('header buikduing')
     // return auth header with jwt if user is logged in and request is to the api url
-    const { user } = useAuthStore();
-    const isLoggedIn = !!user?.access_token;
+    const { auth0user , token} = useAuthStore();
+    const isLoggedIn = !!auth0user.authenticated?.email;
 
+ 
     if (isLoggedIn) {
-        return { Authorization: `Bearer ${user.access_token}` };
+        return { Authorization: `Bearer ${token}` };
     } else {
         return {};
     }

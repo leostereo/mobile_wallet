@@ -28,23 +28,31 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to, from, next) => {
-    const publicPages = ['/login','/'];
+    const publicPages = ['/login' , ''];
     const authRequired = !publicPages.includes(to.path);
     const auth = useAuthStore();
+    console.log(`ROUTER TO: ${to.path} AND isAuthenticated : ${auth.isAuthenticated}`);
 
     if (authRequired && !auth.isAuthenticated) {
     //auth.returnUrl = to.fullPath;
-      console.log('ROUTER: USUARIO NO LOGUEADO');
+      console.log('ROUTER: USUARIO NO LOGUEADO: REDIRECT TO LOGIN');
       next({
         path: '/login',
         replace: true
       })
+
+    // } else if (authRequired && auth.isAuthenticated) {
+    //   console.log('ROUTER: USUARIO YA LOGUEADO:  MOVE TO DASH');
+    //   next({
+    //     path: '/',
+    //     replace: true
+    //   })
+          
     } else {
-      console.log('ROUTER: USUARIO LOGUEADO');
+      console.log('ROUTER: USUARIO LOGUEADO: MOVE NORMAL');
       next()
     }
   })
-
 
   return Router
 

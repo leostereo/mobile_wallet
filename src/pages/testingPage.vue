@@ -2,6 +2,12 @@
   <q-page class="flex flex-center">
     testing
 
+      <q-select color="grey-3" outlined label-color="orange" v-model="model" :options="options" label="Label">
+        <template v-slot:append>
+          <q-icon name="event" color="orange" />
+        </template>
+      </q-select>
+
     <q-input v-model="token" filled hint="result" />
     <q-btn @click="fireLogin" color="primary" label="call login" />
     <q-btn @click="fireTest" color="primary" label="call test" />

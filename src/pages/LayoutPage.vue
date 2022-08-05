@@ -79,19 +79,18 @@
 import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { ACCOUNT_ACTIONS, ACCOUNT_CASH_OPERATION } from 'src/constants'
-import { useAccountsStore } from 'src/stores/accounts.store';
+
 
 
 const operations = ACCOUNT_CASH_OPERATION;
 const actions = ACCOUNT_ACTIONS;
-const accountsStore = useAccountsStore();
+
 const slide = ref(0);
 
 onMounted(() => {
 
   console.log(`the accounts carusel component is now mounted.`)
-  accountsStore.getDetails();
-
+ 
 })
 
 </script>

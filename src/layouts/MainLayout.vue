@@ -32,7 +32,7 @@
                       <q-icon color="primary" name="swipe_left_alt" />
                     </q-item-section>
                     <q-item-section>
-                      <q-slider v-model="vert_pos" :min="0" :max="200" color="primary" />
+                      <q-slider v-model="vert_pos" :min="0" :max="400" color="primary" />
 
                     </q-item-section>
                   </q-item>
@@ -113,28 +113,25 @@ import { useRouter } from "vue-router";
 import routes from 'src/router/routes';
 import { ref, watch } from 'vue';
 
-
-//import { useAuth0AuthStore } from 'src/stores/auth0.auth.store';
-
-
-//const auth0Store = useAuth0AuthStore();
+//Global objects
 const authStore = useAuthStore();
-const router = useRouter(); //borrar
 const auth0 = useAuth0();
-const show = ref(false);
+const router = useRouter();
 
+//Auth0 vars
 const isAuthenticated = ref(auth0.isAuthenticated);
 const isLoading = ref(auth0.isLoading);
 const user = ref(auth0.user);
-const ver_pos = ref('40');
 
-//auth0Store.isAuthenticated = ref(auth0.isAuthenticated);
+//GUI vars
+const show = ref(false);    //menu
 const slide = ref('Dashboard');
-
 const vert_mode = ref(true);
 const vert_pos = ref(0);
-
+const route_name = router.name;
 const BottomButtons = routes.filter(
+
+
 
   function (route) {
     return route.pos == 'bottom';
@@ -147,10 +144,17 @@ const TopButtons = routes.filter(
   });
 
 
-watch(vert_mode, (mode) => {
-  console.log(`pos is ${mode}`)
-
+watch(isAuthenticated, (authenticated) => {
+  console.log(`MAIN LAYOUT: auth status is ${authenticated}`)
+  authStore.isAuthenticated = authenticated;
+  if(authenticated == true && router.currentRoute._rawValue.path == '/login'){
+    console.log(`MAIN LAYOUT : LETS PUSH DASHBOARD`)
+    router.push('/')
+  }
+  
 })
+
+
 
 function logout() {
 
